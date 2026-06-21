@@ -41,7 +41,7 @@ const Certifications = () => {
             <div key={index} className="glass-panel" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <div style={{ height: '200px', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--card-border)' }}>
                 <img 
-                  src={`/assets/certificates/${cert.img}`} 
+                  src={`${import.meta.env.BASE_URL}assets/certificates/${cert.img}`} 
                   alt={cert.title} 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => { 
@@ -70,7 +70,7 @@ const Certifications = () => {
         <div className="glass-panel" style={{ overflow: 'hidden', display: 'inline-flex', flexDirection: 'column', maxWidth: '600px' }}>
           <div style={{ width: '100%', background: 'rgba(0,0,0,0.5)', borderBottom: '1px solid var(--card-border)' }}>
             <img 
-              src="/assets/certificates/internship_cert.jpg" 
+              src={`${import.meta.env.BASE_URL}assets/certificates/internship_cert.jpg`} 
               alt="CraftBrain x Inikola Internship Certificate" 
               style={{ width: '100%', height: 'auto', display: 'block' }}
               onError={(e) => { 
