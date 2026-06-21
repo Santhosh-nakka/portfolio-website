@@ -1,27 +1,33 @@
 import React from 'react';
 import { FaAward } from 'react-icons/fa';
 
+import googleCloudCert from '../assets/certificates/cert-google-cloud.jpg';
+import salesforceCert from '../assets/certificates/cert-salesforce.jpg';
+import infosysCert from '../assets/certificates/cert-infosys.jpg';
+import hexartCert from '../assets/certificates/cert-hexart.jpg';
+import internshipCert from '../assets/certificates/internship_cert.jpg';
+
 const Certifications = () => {
   const certifications = [
     {
       title: 'Google Cloud Career Launchpad',
       issuer: 'Generative AI Leader Track',
-      img: 'cert-google-cloud.jpg' // Placeholder name
+      img: googleCloudCert
     },
     {
       title: 'Salesforce Certified',
       issuer: 'Agentforce Specialist',
-      img: 'cert-salesforce.jpg' // Placeholder name
+      img: salesforceCert
     },
     {
       title: 'Infosys Springboard',
       issuer: 'Cloud Technologies',
-      img: 'cert-infosys.jpg' // Placeholder name
+      img: infosysCert
     },
     {
       title: 'Hexart Certifications',
       issuer: 'AI Beginner, AI Foundation, and AI Advanced',
-      img: 'cert-hexart.jpg' // Placeholder name
+      img: hexartCert
     }
   ];
 
@@ -33,15 +39,12 @@ const Certifications = () => {
         <h3 style={{ fontSize: '1.5rem', color: 'var(--text-main)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <FaAward color="var(--primary-color)" /> Professional Certifications
         </h3>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
-          *Note: Please place your certificate screenshots named <code>cert-google-cloud.png</code>, <code>cert-salesforce.png</code>, <code>cert-infosys.png</code>, and <code>cert-hexart.png</code> inside the <code>public/assets/certificates/</code> folder to display them below.*
-        </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
           {certifications.map((cert, index) => (
             <div key={index} className="glass-panel" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <div style={{ height: '200px', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--card-border)' }}>
                 <img 
-                  src={`${import.meta.env.BASE_URL}assets/certificates/${cert.img}`} 
+                  src={cert.img} 
                   alt={cert.title} 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => { 
@@ -70,7 +73,7 @@ const Certifications = () => {
         <div className="glass-panel" style={{ overflow: 'hidden', display: 'inline-flex', flexDirection: 'column', maxWidth: '600px' }}>
           <div style={{ width: '100%', background: 'rgba(0,0,0,0.5)', borderBottom: '1px solid var(--card-border)' }}>
             <img 
-              src={`${import.meta.env.BASE_URL}assets/certificates/internship_cert.jpg`} 
+              src={internshipCert} 
               alt="CraftBrain x Inikola Internship Certificate" 
               style={{ width: '100%', height: 'auto', display: 'block' }}
               onError={(e) => { 

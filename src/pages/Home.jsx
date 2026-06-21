@@ -1,12 +1,14 @@
 import React from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaDownload } from 'react-icons/fa';
 
+import profilePic from '../assets/profile_pic.jpeg';
+
 const Home = () => {
   return (
     <div className="container">
       <div className="home-content glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '4rem 2rem', marginTop: '2rem' }}>
         <img 
-          src={`${import.meta.env.BASE_URL}assets/profile_pic.jpeg`} 
+          src={profilePic} 
           alt="Santhosh Nakka" 
           style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--primary-color)', marginBottom: '1.5rem' }} 
           onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=Santhosh+Nakka&background=random&size=150' }}
