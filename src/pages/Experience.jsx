@@ -15,6 +15,28 @@ const Experience = () => {
       ]
     },
     {
+      role: 'Virtual Internship - Generative AI',
+      company: 'L4G & Google for Developers',
+      date: 'May 2026 – July 2026',
+      location: 'Remote',
+      points: [
+        'Completed a comprehensive 10-week virtual internship program focused on Generative AI technologies and applications.',
+        'Achieved 22 Skill Badges supported by Google for Developers, demonstrating proficiency in cutting-edge AI tools.',
+        'Gained hands-on experience in building and deploying LLM-based solutions and advanced prompt engineering.'
+      ]
+    },
+    {
+      role: 'Virtual Internship - Associate Cloud Engineering',
+      company: 'L4G & Google for Developers',
+      date: 'May 2026 – July 2026',
+      location: 'Remote',
+      points: [
+        'Completed a 10-week intensive virtual internship focused on cloud architecture and deployment on Google Cloud Platform.',
+        'Earned 10 Skill Badges supported by Google for Developers, validating core competencies in cloud engineering.',
+        'Applied cloud computing best practices to manage infrastructure, deploy scalable applications, and optimize cloud resources.'
+      ]
+    },
+    {
       role: 'AI & Machine Learning Intern',
       company: 'Inikola × CraftingBrain',
       date: 'May 2, 2026 – May 9, 2026',

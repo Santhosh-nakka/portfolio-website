@@ -1,7 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCode, FaServer, FaDatabase, FaBrain, FaTools, FaGraduationCap } from 'react-icons/fa';
+import { Cloud, fetchSimpleIcons, renderSimpleIcon } from 'react-icon-cloud';
+
+const slugs = [
+  'javascript', 'python', 'java', 'html5', 'css3', 'react', 
+  'django', 'fastapi', 'nodedotjs', 'sqlite', 'scikitlearn',
+  'git', 'github', 'visualstudiocode', 'tableau', 'render', 
+  'googlecloud', 'openai'
+];
+
+const useIcons = (slugs) => {
+  const [icons, setIcons] = useState();
+  useEffect(() => {
+    fetchSimpleIcons({ slugs }).then(setIcons);
+  }, [slugs]);
+
+  if (icons) {
+    return Object.values(icons.simpleIcons).map((icon) => renderSimpleIcon({
+      icon,
+      size: 50,
+      aProps: {
+        href: undefined,
+        target: undefined,
+        rel: undefined,
+        onClick: (e) => e.preventDefault(),
+      },
+    }));
+  }
+  return <div>Loading...</div>;
+};
 
 const Skills = () => {
+  const globeIcons = useIcons(slugs);
+
   const skillCategories = [
     {
       title: 'Languages',
@@ -26,18 +57,40 @@ const Skills = () => {
     {
       title: 'AI / ML',
       icon: <FaBrain size={24} />,
-      skills: ['LLM APIs', 'Prompt Engineering', 'Scikit-learn', 'Machine Learning', 'NLP']
+      skills: ['Generative AI', 'LLMs', 'Prompt Engineering', 'Scikit-learn', 'Machine Learning', 'NLP']
     },
     {
-      title: 'Tools & Concepts',
+      title: 'Tools & Cloud',
       icon: <FaTools size={24} />,
-      skills: ['Git', 'GitHub', 'VS Code', 'Tableau', 'Render', 'Full Stack Development', 'Google Cloud Generative AI', 'Google Cloud ACE']
+      skills: ['Google Cloud Platform', 'Cloud Computing', 'Git', 'GitHub', 'VS Code', 'Tableau', 'Render']
     }
   ];
 
   return (
     <div className="container">
       <h2 className="section-title">Technical Skills</h2>
+      
+      {/* Globe Container */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '500px', marginBottom: '4rem', padding: '2rem' }}>
+        <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+          <Cloud
+            options={{
+              clickToFront: 500,
+              depth: 1,
+              imageScale: 2,
+              initial: [0.1, -0.1],
+              outlineColour: '#0000',
+              reverse: true,
+              tooltip: 'native',
+              tooltipDelay: 0,
+              wheelZoom: false,
+            }}
+          >
+            {globeIcons}
+          </Cloud>
+        </div>
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
         {skillCategories.map((category, index) => (
           <div key={index} className="glass-panel" style={{ padding: '2rem' }}>

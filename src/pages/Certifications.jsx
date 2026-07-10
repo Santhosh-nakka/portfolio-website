@@ -7,6 +7,8 @@ import infosysCert from '../assets/certificates/cert-infosys.jpg';
 import hexartCert from '../assets/certificates/cert-hexart.jpg';
 import internshipCert from '../assets/certificates/internship_cert.jpg';
 import codeAlphaCert from '../assets/certificates/codealpha_cert.jpg';
+import l4gGenAiCert from '../assets/certificates/l4g_genai.jpg';
+import l4gAceCert from '../assets/certificates/l4g_ace.jpg';
 
 const Certifications = () => {
   const certifications = [
@@ -42,6 +44,16 @@ const Certifications = () => {
       title: 'AI & Machine Learning Internship',
       issuer: 'CraftBrain × Inikola',
       img: internshipCert
+    },
+    {
+      title: 'Generative AI Virtual Internship',
+      issuer: 'L4G & Google for Developers',
+      img: l4gGenAiCert
+    },
+    {
+      title: 'Associate Cloud Engineering Internship',
+      issuer: 'L4G & Google for Developers',
+      img: l4gAceCert
     }
   ];
 
