@@ -1,12 +1,14 @@
 import React from 'react';
-import { FaBriefcase } from 'react-icons/fa';
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
+import 'react-vertical-timeline-component/style.min.css';
+import { FaBriefcase, FaGraduationCap } from 'react-icons/fa';
 
 const Experience = () => {
   const experiences = [
     {
       role: 'Full Stack Development Intern',
       company: 'CodeAlpha',
-      date: 'May 17, 2026 – June 13, 2026',
+      date: 'May 2026 – June 2026',
       location: 'Remote',
       points: [
         'Developed and deployed 2 responsive web applications using React, Node.js, and REST APIs with full cross-device compatibility.',
@@ -39,7 +41,7 @@ const Experience = () => {
     {
       role: 'AI & Machine Learning Intern',
       company: 'Inikola × CraftingBrain',
-      date: 'May 2, 2026 – May 9, 2026',
+      date: 'May 2026 – May 2026',
       location: 'Remote',
       points: [
         'Recognized as a Top Performer among cohort members, receiving a Certificate of Excellence for outstanding real-time AI project work.',
@@ -50,34 +52,34 @@ const Experience = () => {
   ];
 
   return (
-    <div className="container">
-      <h2 className="section-title">Experience</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '800px' }}>
+    <div className="container experience-page" style={{ padding: '50px 20px', maxWidth: '1000px' }}>
+      <h2 className="section-title">
+        <span>Experience & </span>
+        <span style={{ color: '#fff' }}>Internships</span>
+      </h2>
+      
+      <VerticalTimeline>
         {experiences.map((exp, index) => (
-          <div key={index} className="glass-panel" style={{ padding: '2.5rem', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '-15px', left: '2rem', background: 'var(--accent-color)', padding: '0.8rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <FaBriefcase size={24} color="#fff" />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', marginTop: '1rem', marginBottom: '1.5rem' }}>
-              <div>
-                <h3 style={{ fontSize: '1.5rem', color: 'var(--text-main)', marginBottom: '0.2rem' }}>{exp.role}</h3>
-                <h4 style={{ fontSize: '1.1rem', color: 'var(--primary-color)' }}>{exp.company} <span style={{ color: 'var(--text-muted)' }}>| {exp.location}</span></h4>
-              </div>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', background: 'rgba(255,255,255,0.05)', padding: '0.3rem 0.8rem', borderRadius: '20px' }}>
-                {exp.date}
-              </span>
-            </div>
-            <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+          <VerticalTimelineElement
+            key={index}
+            className="vertical-timeline-element--work"
+            contentStyle={{ background: '#111111', color: '#fff', borderTop: '3px solid #08fdd8', boxShadow: '0 3px 15px rgba(0,0,0,0.5)' }}
+            contentArrowStyle={{ borderRight: '7px solid  #111111' }}
+            date={exp.date}
+            dateClassName="timeline-date-custom"
+            iconStyle={{ background: '#08fdd8', color: '#111' }}
+            icon={<FaBriefcase />}
+          >
+            <h3 className="vertical-timeline-element-title" style={{ color: '#08fdd8', fontSize: '22px' }}>{exp.role}</h3>
+            <h4 className="vertical-timeline-element-subtitle" style={{ fontSize: '16px', marginTop: '5px' }}>{exp.company} <span style={{ opacity: 0.6 }}>| {exp.location}</span></h4>
+            <ul style={{ listStyleType: 'disc', marginLeft: '20px', marginTop: '15px', color: '#a1a1aa' }}>
               {exp.points.map((point, i) => (
-                <li key={i} style={{ marginBottom: '0.8rem', paddingLeft: '1.5rem', position: 'relative', color: 'var(--text-muted)' }}>
-                  <span style={{ position: 'absolute', left: 0, top: '8px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--primary-color)' }}></span>
-                  {point}
-                </li>
+                <li key={i} style={{ marginBottom: '8px' }}>{point}</li>
               ))}
             </ul>
-          </div>
+          </VerticalTimelineElement>
         ))}
-      </div>
+      </VerticalTimeline>
     </div>
   );
 };

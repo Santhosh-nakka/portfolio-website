@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import AnimatedLetters from '../components/AnimatedLetters';
 
 const Projects = () => {
+  const [letterClass, setLetterClass] = useState('text-animate');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLetterClass('text-animate-hover');
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const projectsList = [
     {
       title: 'Smart Job Portal AI',
@@ -41,26 +51,37 @@ const Projects = () => {
   ];
 
   return (
-    <div className="container">
-      <h2 className="section-title">Featured Projects</h2>
+    <div className="container" style={{ padding: '0 5%', paddingBottom: '100px' }}>
+      <h1 style={{ fontSize: '53px', fontFamily: 'Coolvetica', color: '#08fdd8', marginBottom: '30px' }}>
+        <AnimatedLetters
+          letterClass={letterClass}
+          strArray={['P', 'o', 'r', 't', 'f', 'o', 'l', 'i', 'o']}
+          idx={15}
+        />
+      </h1>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
         {projectsList.map((project, index) => (
-          <div key={index} className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ fontSize: '1.4rem', marginBottom: '1rem', color: 'var(--text-main)' }}>{project.title}</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', flexGrow: 1 }}>{project.desc}</p>
+          <div key={index} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', background: '#111', border: '1px solid #333', transition: 'all 0.3s ease' }} 
+               onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#08fdd8'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
+               onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.transform = 'translateY(0)'; }}
+          >
+            <h3 style={{ fontSize: '1.4rem', marginBottom: '1rem', color: '#fff', fontFamily: 'Coolvetica, sans-serif', letterSpacing: '1px' }}>{project.title}</h3>
+            <p style={{ color: '#8d8d8d', marginBottom: '1.5rem', flexGrow: 1, fontSize: '15px' }}>{project.desc}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
               {project.tech.map((t, i) => (
-                <span key={i} style={{ background: 'rgba(59,130,246,0.15)', color: '#93c5fd', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
+                <span key={i} style={{ background: 'rgba(8, 253, 216, 0.1)', color: '#08fdd8', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
                   {t}
                 </span>
               ))}
             </div>
-            <div style={{ display: 'flex', gap: '1rem', borderTop: '1px solid var(--card-border)', paddingTop: '1rem' }}>
-              <a href={project.github} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', borderTop: '1px solid #333', paddingTop: '1rem' }}>
+              <a href={project.github} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '13px', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px' }}
+                 onMouseEnter={(e) => e.target.style.color = '#08fdd8'} onMouseLeave={(e) => e.target.style.color = '#fff'}>
                 <FaGithub size={16} /> Code
               </a>
               {project.live && (
-                <a href={project.live} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: '#a78bfa' }}>
+                <a href={project.live} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '13px', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px' }}
+                   onMouseEnter={(e) => e.target.style.color = '#08fdd8'} onMouseLeave={(e) => e.target.style.color = '#fff'}>
                   <FaExternalLinkAlt size={16} /> Live Demo
                 </a>
               )}
