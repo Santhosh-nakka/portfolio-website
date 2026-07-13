@@ -18,6 +18,7 @@ const Skills = () => {
     const texts = [
       'JavaScript', 'Python', 'Java', 'HTML5', 'CSS3', 'React.js', 
       'Django', 'FastAPI', 'Node.js', 'SQLite', 'Scikit-learn',
+      'Data Analysis', 'Pandas', 'NumPy', 'SciPy',
       'Git', 'GitHub', 'VS Code', 'Tableau', 'Render', 
       'Google Cloud', 'Generative AI', 'Machine Learning', 
       'Prompt Engineering', 'LLMs', 'NLP', 'Cloud Engineering'
@@ -53,7 +54,7 @@ const Skills = () => {
           />
         </h1>
         <p style={{ color: '#fff', fontSize: '15px', marginBottom: '20px' }}>
-          I specialize in <strong>Full Stack Web Development</strong> and <strong>Artificial Intelligence / Machine Learning</strong>. I love building scalable backend architectures and dynamic, responsive frontends.
+          I specialize in <strong>Full Stack Web Development</strong>, <strong>Artificial Intelligence / Machine Learning</strong>, and <strong>Data Analysis</strong>. I love building scalable backend architectures and dynamic, responsive frontends.
         </p>
         <p style={{ color: '#fff', fontSize: '15px', marginBottom: '20px' }}>
           My recent focus has been on <strong>Generative AI</strong> and <strong>Cloud Engineering (GCP)</strong>, verified by my L4G internships where I earned 32 total Skill Badges supported by Google for Developers.

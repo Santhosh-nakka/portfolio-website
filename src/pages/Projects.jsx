@@ -14,6 +14,13 @@ const Projects = () => {
 
   const projectsList = [
     {
+      title: 'InsightSales: 3D Data Analytics',
+      desc: 'A powerful web application transforming raw sales data into actionable business intelligence. Features an interactive 3D space environment, automated data processing (Pandas/NumPy), and dynamic real-time charts.',
+      tech: ['Python', 'Flask', 'Three.js', 'Pandas', 'NumPy', 'React.js'],
+      github: 'https://github.com/Santhosh-nakka/InsightSales',
+      live: 'https://insightsales.onrender.com'
+    },
+    {
       title: 'Smart Job Portal AI',
       desc: 'Developed an AI-powered job portal utilizing React.js and Flask. Implemented NLP techniques to extract technical skills, calculate ATS scores, and generate personalized feedback to improve candidate readiness.',
       tech: ['React.js', 'Flask', 'Python', 'NLP', 'HTML', 'CSS'],
