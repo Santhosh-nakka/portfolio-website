@@ -14,11 +14,18 @@ const Projects = () => {
 
   const projectsList = [
     {
+      title: 'EscalateAI',
+      desc: 'An AI-powered platform designed for automated escalation and intelligent customer support resolution.',
+      tech: ['React.js', 'Artificial Intelligence', 'JavaScript', 'CSS'],
+      github: 'https://github.com/Santhosh-nakka/EscalateAI',
+      live: 'https://escalate-ai-ivory.vercel.app'
+    },
+    {
       title: 'InsightSales: 3D Data Analytics',
       desc: 'A powerful web application transforming raw sales data into actionable business intelligence. Features an interactive 3D space environment, automated data processing (Pandas/NumPy), and dynamic real-time charts.',
       tech: ['Python', 'Flask', 'Three.js', 'Pandas', 'NumPy', 'React.js'],
       github: 'https://github.com/Santhosh-nakka/InsightSales',
-      live: 'https://insightsales.onrender.com'
+      live: 'https://insightsales-eta.vercel.app/'
     },
     {
       title: 'Smart Job Portal AI',
@@ -32,7 +39,7 @@ const Projects = () => {
       desc: 'Trained and deployed a Logistic Regression model on 1,000+ records achieving 87% accuracy. Built a responsive Flask dashboard to deliver real-time loan eligibility predictions.',
       tech: ['Python', 'Flask', 'Machine Learning', 'Logistic Regression'],
       github: 'https://github.com/Santhosh-nakka/Loan-approval-system',
-      live: 'https://loan-approval-system-j2tc.onrender.com'
+      live: 'https://loan-approval-system-zeta.vercel.app/'
     },
     {
       title: 'NexSite AI',
