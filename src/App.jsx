@@ -5,6 +5,7 @@ import Experience from './pages/Experience';
 import Projects from './pages/Projects';
 import Skills from './pages/Skills';
 import Certifications from './pages/Certifications';
+import Contact from './pages/Contact';
 import OceanBackground from './components/OceanBackground';
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
         </section>
         <section id="certifications" style={{ minHeight: '100vh', position: 'relative' }}>
           <Certifications />
+        </section>
+        <section id="contact" style={{ minHeight: '100vh', position: 'relative' }}>
+          <Contact />
         </section>
         
         <span className="tags bottom-tags" style={{ position: 'relative', display: 'block', paddingBottom: '20px', left: '120px' }}>

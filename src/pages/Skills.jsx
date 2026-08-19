@@ -44,8 +44,10 @@ const Skills = () => {
   }, []);
 
   return (
-    <div className="container skills-page" style={{ height: '100%', position: 'relative' }}>
-      <div className="text-zone">
+    <div className="container skills-page" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', padding: '0 5%' }}>
+      
+      {/* Left side: Text */}
+      <div className="text-zone" style={{ position: 'relative', left: 'auto', top: 'auto', transform: 'none', width: '100%', maxWidth: '500px', flex: '1 1 400px', zIndex: 1 }}>
         <h1 style={{ fontSize: '53px', fontFamily: 'Coolvetica', color: '#08fdd8', marginBottom: '30px' }}>
           <AnimatedLetters
             letterClass={letterClass}
@@ -64,9 +66,11 @@ const Skills = () => {
         </p>
       </div>
       
-      <div style={{ position: 'absolute', top: '50%', right: '5%', transform: 'translateY(-50%)', width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: -1 }}>
+      {/* Right side: Globe */}
+      <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 0 }}>
         <div ref={containerRef} className="tagcloud"></div>
       </div>
+      
     </div>
   );
 };

@@ -16,7 +16,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container home-page" style={{ height: '100%', position: 'relative' }}>
+    <div className="container home-page" style={{ minHeight: '100vh', position: 'relative' }}>
       <div className="text-zone">
         <h1 style={{ fontSize: '70px', lineHeight: '65px', color: '#fff', fontWeight: 400, fontFamily: 'Coolvetica, sans-serif' }}>
           <span className={letterClass}>H</span>

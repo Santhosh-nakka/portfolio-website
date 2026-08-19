@@ -28,6 +28,9 @@ const Sidebar = () => {
         <a className="cert-link" href="#certifications" onClick={() => setShowNav(false)}>
           <FaAward color="#4d4d4e" />
         </a>
+        <a className="contact-link" href="#contact" onClick={() => setShowNav(false)}>
+          <FaEnvelope color="#4d4d4e" />
+        </a>
         <FaTimes 
           onClick={() => setShowNav(false)} 
           color="#ffd700" 
