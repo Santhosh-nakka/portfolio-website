@@ -1,5 +1,4 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Experience from './pages/Experience';
@@ -10,27 +9,35 @@ import OceanBackground from './components/OceanBackground';
 
 function App() {
   return (
-    <Router>
+    <div>
       <Sidebar />
-      <div className="page">
+      <div className="page" style={{ overflowY: 'auto', height: '100vh', scrollBehavior: 'smooth', position: 'relative', overflowX: 'hidden' }}>
         <OceanBackground />
-        <span className="tags top-tags">&lt;body&gt;</span>
+        <span className="tags top-tags" style={{ position: 'absolute' }}>&lt;body&gt;</span>
         
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/experience" element={<Experience />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/skills" element={<Skills />} />
-          <Route path="/certifications" element={<Certifications />} />
-        </Routes>
+        <section id="home" style={{ minHeight: '100vh', position: 'relative' }}>
+          <Home />
+        </section>
+        <section id="experience" style={{ minHeight: '100vh', position: 'relative' }}>
+          <Experience />
+        </section>
+        <section id="projects" style={{ minHeight: '100vh', position: 'relative' }}>
+          <Projects />
+        </section>
+        <section id="skills" style={{ minHeight: '100vh', position: 'relative' }}>
+          <Skills />
+        </section>
+        <section id="certifications" style={{ minHeight: '100vh', position: 'relative' }}>
+          <Certifications />
+        </section>
         
-        <span className="tags bottom-tags">
+        <span className="tags bottom-tags" style={{ position: 'relative', display: 'block', paddingBottom: '20px', left: '120px' }}>
           &lt;/body&gt;
           <br />
-          <span className="bottom-tag-html">&lt;/html&gt;</span>
+          <span className="bottom-tag-html" style={{ marginLeft: '-20px' }}>&lt;/html&gt;</span>
         </span>
       </div>
-    </Router>
+    </div>
   );
 }
 

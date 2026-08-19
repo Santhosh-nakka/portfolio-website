@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+
 import AnimatedLetters from '../components/AnimatedLetters';
 import profilePic from '../assets/profile_pic.jpeg';
 
@@ -36,7 +36,7 @@ const Home = () => {
           FULL STACK DEVELOPER / AI EXPERT
         </h2>
         
-        <Link to="/experience" style={{
+        <a href="#experience" style={{
           color: '#08fdd8',
           fontSize: '13px',
           fontWeight: 400,
@@ -53,7 +53,7 @@ const Home = () => {
         onMouseLeave={(e) => { e.target.style.background = 'transparent'; e.target.style.color = '#08fdd8'; }}
         >
           VIEW MY WORK
-        </Link>
+        </a>
       </div>
       
       <div style={{ position: 'absolute', top: '50%', right: '10%', transform: 'translateY(-50%)', width: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
