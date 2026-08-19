@@ -75,7 +75,8 @@ const Projects = () => {
       </h1>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
         {projectsList.map((project, index) => (
-          <div key={index} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', background: '#111', border: '1px solid #333', transition: 'all 0.3s ease' }} 
+          <div key={index} className="grabbable" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', background: '#111', border: '1px solid #333', transition: 'all 0.3s ease', cursor: 'pointer' }} 
+               onClick={(e) => window.dispatchEvent(new CustomEvent('octopusGrab', { detail: { target: e.currentTarget } }))}
                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#08fdd8'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.transform = 'translateY(0)'; }}
           >

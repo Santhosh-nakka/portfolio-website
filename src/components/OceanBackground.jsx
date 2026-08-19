@@ -4,15 +4,21 @@ import './OceanBackground.css';
 
 const OceanBackground = () => {
   const canvasRef = useRef(null);
+  const canvasFgRef = useRef(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || !canvasFgRef.current) return;
     const canvas = canvasRef.current;
+    const canvasFg = canvasFgRef.current;
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const rendererFg = new THREE.WebGLRenderer({ canvas: canvasFg, antialias: true, alpha: true });
+    rendererFg.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    rendererFg.setSize(window.innerWidth, window.innerHeight);
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x03202f, 0.028);
@@ -21,12 +27,18 @@ const OceanBackground = () => {
     camera.position.set(0, 1.5, 14);
 
     // ---------- Lights ----------
-    scene.add(new THREE.AmbientLight(0x14425c, 0.9));
+    const ambientLight = new THREE.AmbientLight(0x14425c, 0.9);
+    ambientLight.layers.enable(1);
+    scene.add(ambientLight);
+
     const sun = new THREE.DirectionalLight(0xbfe9ff, 1.1);
     sun.position.set(2, 12, 6);
+    sun.layers.enable(1);
     scene.add(sun);
+
     const bioLight = new THREE.PointLight(0x5cf3d0, 1.4, 14);
     bioLight.position.set(-2, 0, 2);
+    bioLight.layers.enable(1);
     scene.add(bioLight);
 
     // ---------- Helper: soft circular sprite texture ----------
@@ -220,6 +232,7 @@ const OceanBackground = () => {
 
       // bioluminescent spots
       const spotMat = new THREE.MeshStandardMaterial({ color: 0x9dffe8, emissive: 0x6cf5d6, emissiveIntensity: 1.2 });
+      const spots = [];
       for (let i = 0; i < 10; i++) {
         const spot = new THREE.Mesh(new THREE.SphereGeometry(0.045, 6, 6), spotMat);
         const theta = Math.random() * Math.PI * 2;
@@ -230,6 +243,7 @@ const OceanBackground = () => {
           Math.sin(phi) * Math.sin(theta) * 1.0
         );
         group.add(spot);
+        spots.push(spot);
       }
 
       function eye(sign) {
@@ -241,7 +255,8 @@ const OceanBackground = () => {
         g.position.set(sign * 0.42, 1.55, 0.85);
         return g;
       }
-      group.add(eye(1), eye(-1));
+      const eyes = [eye(1), eye(-1)];
+      group.add(eyes[0], eyes[1]);
 
       // tentacles: chained segments for wave motion
       const tentacles = [];
@@ -273,19 +288,116 @@ const OceanBackground = () => {
           parent = nextPivot;
           radius *= 0.78;
         }
-        tentacles.push({ pivots, phase: baseAngle });
+        tentacles.push({ root, pivots, phase: baseAngle });
       }
 
       group.position.set(-2.5, -1.5, 1);
       scene.add(group);
 
+      let mode = 'wander'; // 'wander', 'swimToTarget', 'grab', 'release'
+      let stateTime = 0;
+      let lastT = 0;
+      let targetCenter = new THREE.Vector3();
+      let startPos = new THREE.Vector3();
+      let wanderPos = new THREE.Vector3();
+
+      function setLayer(layerId) {
+        mantle.layers.set(layerId);
+        eyes.forEach(e => e.traverse(c => c.layers.set(layerId)));
+        spots.forEach(s => s.layers.set(layerId));
+        tentacles.forEach((tent, i) => {
+          // Front tentacles (0, 1, 7) come to the foreground, back tentacles stay in background (0)
+          if (i === 0 || i === 1 || i === 7) {
+            tent.root.traverse(c => c.layers.set(layerId));
+          } else {
+            tent.root.traverse(c => c.layers.set(0));
+          }
+        });
+      }
+
       return {
         group,
+        grabTarget(pos) {
+          if (mode === 'grab' || mode === 'swimToTarget') return;
+          mode = 'swimToTarget';
+          stateTime = 0;
+          targetCenter.copy(pos);
+          // Position to peek over the top center of the card
+          targetCenter.y += 1.8; 
+          targetCenter.z = 1.5; // come closer to camera
+          startPos.copy(group.position);
+        },
         update(t) {
-          group.position.x = -2.5 + Math.sin(t * 0.15) * 2.5;
-          group.position.z = 1 + Math.cos(t * 0.12) * 2;
-          group.position.y = -1.5 + Math.sin(t * 0.5) * 0.4;
-          group.rotation.y = Math.sin(t * 0.15) * 0.6;
+          const dt = t - lastT;
+          lastT = t;
+          if (mode !== 'wander') {
+            stateTime += dt;
+          }
+
+          wanderPos.x = -2.5 + Math.sin(t * 0.15) * 2.5;
+          wanderPos.z = 1 + Math.cos(t * 0.12) * 2;
+          wanderPos.y = -1.5 + Math.sin(t * 0.5) * 0.4;
+          const wanderRotY = Math.sin(t * 0.15) * 0.6;
+
+          let currentRotX = 0;
+          let currentRotZ = 0;
+
+          if (mode === 'swimToTarget') {
+            const progress = Math.min(stateTime / 1.5, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            group.position.lerpVectors(startPos, targetCenter, ease);
+            group.rotation.y = wanderRotY * (1 - ease);
+            currentRotX = (Math.PI / 4) * ease; // lean heavily forward
+            currentRotZ = 0;
+            group.rotation.x = currentRotX;
+            group.rotation.z = currentRotZ;
+
+            // Halfway through the swim, pop out into the foreground canvas!
+            if (progress > 0.5) {
+              setLayer(1);
+            }
+
+            if (progress >= 1) {
+              mode = 'grab';
+              stateTime = 0;
+            }
+          } else if (mode === 'grab') {
+            group.position.copy(targetCenter);
+            group.position.y += Math.sin(t * 2) * 0.05; // very small bob
+            group.rotation.y = 0;
+            currentRotX = Math.PI / 4; // hold lean
+            currentRotZ = 0;
+            group.rotation.x = currentRotX;
+            group.rotation.z = currentRotZ;
+
+            if (stateTime > 3.0) {
+              mode = 'release';
+              stateTime = 0;
+              startPos.copy(group.position);
+            }
+          } else if (mode === 'release') {
+            const progress = Math.min(stateTime / 1.5, 1);
+            const ease = progress * progress * (3 - 2 * progress); // smoothstep
+            group.position.lerpVectors(startPos, wanderPos, ease);
+            group.rotation.y = wanderRotY * ease;
+            group.rotation.x = (Math.PI / 4) * (1 - ease);
+            group.rotation.z = 0;
+
+            // Halfway through swimming back, pop back into the background
+            if (progress > 0.5) {
+              setLayer(0);
+            }
+
+            if (progress >= 1) {
+              mode = 'wander';
+            }
+          } else {
+            group.position.copy(wanderPos);
+            group.rotation.y = wanderRotY;
+            group.rotation.x = 0;
+            group.rotation.z = 0;
+          }
+
           mantle.scale.set(
             1 + Math.sin(t * 1.4) * 0.03,
             1.25 + Math.sin(t * 1.4 + 1) * 0.05,
@@ -293,10 +405,22 @@ const OceanBackground = () => {
           );
           tentacles.forEach((tent, ti) => {
             tent.pivots.forEach((pivot, si) => {
-              const wave = Math.sin(t * 2.2 + tent.phase * 2 + si * 0.8) * 0.35;
-              const wave2 = Math.cos(t * 1.7 + tent.phase * 1.3 + si * 0.6) * 0.25;
-              pivot.rotation.x = 0.15 + wave * (si / tent.pivots.length + 0.3);
-              pivot.rotation.z = wave2 * (si / tent.pivots.length + 0.2);
+              let wave = Math.sin(t * 2.2 + tent.phase * 2 + si * 0.8) * 0.35;
+              let wave2 = Math.cos(t * 1.7 + tent.phase * 1.3 + si * 0.6) * 0.25;
+              
+              // Waving "hi" with the front right tentacle (ti === 0) during grab mode
+              if (mode === 'grab' && ti === 0) {
+                 // Raise it up and wave ONCE
+                 pivot.rotation.x = -1.2;
+                 pivot.rotation.z = Math.sin(stateTime * 12) * 0.5 * Math.max(0, 1 - stateTime / 2);
+              } else if (mode === 'grab') {
+                 // Other tentacles hang down behind the card
+                 pivot.rotation.x = 0.2;
+                 pivot.rotation.z = 0;
+              } else {
+                 pivot.rotation.x = 0.15 + wave * (si / tent.pivots.length + 0.3);
+                 pivot.rotation.z = wave2 * (si / tent.pivots.length + 0.2);
+              }
             });
           });
         }
@@ -474,6 +598,7 @@ const OceanBackground = () => {
     }
 
     let introDone = false;
+    let introStartTime = 0;
     const introDelay = 0.5;   // settle time before the fish starts swimming, seconds
     const introDuration = 2.4; // swim duration, seconds
     const introFadeOut = 1.0;  // fish fade-out duration after arrival
@@ -486,21 +611,51 @@ const OceanBackground = () => {
         computeAvatarWorldTarget();
         introStart.set(-22, introTarget.y + 0.5, introTarget.z + 1.5);
         heroFish.position.copy(introStart);
+        introStartTime = clock.getElapsedTime();
       }, 50);
     }
 
+    const onTriggerFishIntro = () => {
+      console.log('Fish intro triggered!');
+      introDone = false;
+      computeAvatarWorldTarget();
+      introStart.set(-22, introTarget.y + 0.5, introTarget.z + 1.5);
+      heroFish.position.copy(introStart);
+      heroFish.scale.setScalar(2);
+      heroFish.visible = true;
+      introStartTime = clock.getElapsedTime();
+    };
+    window.addEventListener('triggerFishIntro', onTriggerFishIntro);
+
+    const onOctopusGrab = (e) => {
+      const el = e.detail.target;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      
+      const ndc = new THREE.Vector2((cx / window.innerWidth) * 2 - 1, -(cy / window.innerHeight) * 2 + 1);
+      
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(ndc, camera);
+      const targetCenter = new THREE.Vector3();
+      // Assume the elements are on the screen plane (approx z=0 from camera perspective)
+      // Since camera is at z=14, let's intersect at z=-0.5 for the octopus to grab behind
+      const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0.5); 
+      raycaster.ray.intersectPlane(plane, targetCenter);
+
+      if (targetCenter) {
+        octopus.grabTarget(targetCenter);
+      }
+    };
+    window.addEventListener('octopusGrab', onOctopusGrab);
+
     function updateIntro(t) {
       const avatarEl = document.getElementById('avatarWrap');
-      if (introDone) {
-        // Fallback: If user navigates away and back, make sure it stays revealed instantly
-        if (avatarEl && !avatarEl.classList.contains('revealed')) {
-          avatarEl.classList.add('revealed');
-        }
-        return;
-      }
+      if (introDone) return;
       if (!avatarEl) return;
 
-      const elapsed = t - introDelay;
+      const elapsed = t - introStartTime - introDelay;
       if (elapsed < 0) return;
 
       const progress = Math.min(elapsed / introDuration, 1);
@@ -628,7 +783,16 @@ const OceanBackground = () => {
       camera.position.y = 1.5 - mouseCurrent.y * 1.2;
       camera.lookAt(0, -0.5, -2);
 
+      // Render background layer (z-index -10)
+      camera.layers.set(0);
       renderer.render(scene, camera);
+
+      // Render foreground layer (z-index 100)
+      camera.layers.set(1);
+      rendererFg.render(scene, camera);
+      
+      // Reset camera to layer 0 for raycasting in the next frame
+      camera.layers.set(0);
       
       if (!prefersReduced) {
         animationFrameId = requestAnimationFrame(animate);
@@ -649,6 +813,8 @@ const OceanBackground = () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseleave', onMouseLeave);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('triggerFishIntro', onTriggerFishIntro);
+      window.removeEventListener('octopusGrab', onOctopusGrab);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
@@ -656,13 +822,17 @@ const OceanBackground = () => {
         clearTimeout(mouseIdleTimer);
       }
       renderer.dispose();
+      rendererFg.dispose();
     };
   }, []);
 
   return (
     <>
-      <div id="scene-wrap">
+      <div id="scene-wrap" style={{ zIndex: -10 }}>
         <canvas id="gl" ref={canvasRef}></canvas>
+      </div>
+      <div id="scene-wrap-fg" style={{ position: 'fixed', inset: 0, zIndex: 100, pointerEvents: 'none' }}>
+        <canvas id="gl-fg" ref={canvasFgRef}></canvas>
       </div>
       <div className="caustic-overlay"></div>
     </>

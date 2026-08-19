@@ -167,3 +167,14 @@ a {
   .avatar-wrap { transition: opacity 0.6s ease; }
 }
 
+@keyframes flipAndFall {
+  0% { transform: scale(1) rotateY(0) translateY(0); opacity: 1; }
+  15% { transform: scale(1.1) rotateY(360deg) translateY(-30px); opacity: 1; }
+  100% { transform: scale(0.4) rotateY(2160deg) translateY(150vh); opacity: 0; }
+}
+
+.avatar-wrap.fall-down {
+  animation: flipAndFall 1.5s forwards cubic-bezier(0.5, 0, 0.2, 1);
+  transition: none !important;
+}
+

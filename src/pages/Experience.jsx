@@ -70,13 +70,15 @@ const Experience = () => {
             iconStyle={{ background: '#08fdd8', color: '#111' }}
             icon={<FaBriefcase />}
           >
-            <h3 className="vertical-timeline-element-title" style={{ color: '#08fdd8', fontSize: '22px' }}>{exp.role}</h3>
-            <h4 className="vertical-timeline-element-subtitle" style={{ fontSize: '16px', marginTop: '5px' }}>{exp.company} <span style={{ opacity: 0.6 }}>| {exp.location}</span></h4>
-            <ul style={{ listStyleType: 'disc', marginLeft: '20px', marginTop: '15px', color: '#a1a1aa' }}>
-              {exp.points.map((point, i) => (
-                <li key={i} style={{ marginBottom: '8px' }}>{point}</li>
-              ))}
-            </ul>
+            <div className="grabbable" style={{ cursor: 'pointer' }} onClick={(e) => window.dispatchEvent(new CustomEvent('octopusGrab', { detail: { target: e.currentTarget.parentElement } }))}>
+              <h3 className="vertical-timeline-element-title" style={{ color: '#08fdd8', fontSize: '22px' }}>{exp.role}</h3>
+              <h4 className="vertical-timeline-element-subtitle" style={{ fontSize: '16px', marginTop: '5px' }}>{exp.company} <span style={{ opacity: 0.6 }}>| {exp.location}</span></h4>
+              <ul style={{ listStyleType: 'disc', marginLeft: '20px', marginTop: '15px', color: '#a1a1aa' }}>
+                {exp.points.map((point, i) => (
+                  <li key={i} style={{ marginBottom: '8px' }}>{point}</li>
+                ))}
+              </ul>
+            </div>
           </VerticalTimelineElement>
         ))}
       </VerticalTimeline>

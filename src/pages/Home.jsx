@@ -15,6 +15,22 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleAvatarClick = () => {
+    console.log("Avatar clicked!");
+    const avatar = document.getElementById('avatarWrap');
+    if (!avatar || avatar.classList.contains('fall-down')) return;
+    
+    avatar.classList.add('fall-down');
+    avatar.classList.remove('revealed');
+    
+    setTimeout(() => {
+      avatar.classList.remove('fall-down');
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('triggerFishIntro'));
+      });
+    }, 1500);
+  };
+
   return (
     <div className="container home-page" style={{ minHeight: '100vh', position: 'relative' }}>
       <div className="text-zone">
@@ -56,8 +72,8 @@ const Home = () => {
         </a>
       </div>
       
-      <div style={{ position: 'absolute', top: '50%', right: '10%', transform: 'translateY(-50%)', width: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div id="avatarWrap" className="avatar-wrap">
+      <div style={{ position: 'absolute', top: '50%', right: '10%', transform: 'translateY(-50%)', width: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10 }}>
+        <div id="avatarWrap" className="avatar-wrap" onClick={handleAvatarClick} style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
           <img 
             src={profilePic} 
             alt="Santhosh Nakka" 

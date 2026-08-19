@@ -77,7 +77,8 @@ const Certifications = () => {
         <div className="marquee-container">
           <div className="marquee-content">
             {[...certifications, ...certifications].map((cert, index) => (
-              <div key={index} style={{ minWidth: '300px', maxWidth: '300px', flex: '0 0 auto', background: '#111', border: '1px solid #333', display: 'flex', flexDirection: 'column', transition: 'all 0.3s ease' }}
+              <div key={index} className="grabbable" style={{ minWidth: '300px', maxWidth: '300px', flex: '0 0 auto', background: '#111', border: '1px solid #333', display: 'flex', flexDirection: 'column', transition: 'all 0.3s ease', cursor: 'pointer' }}
+                   onClick={(e) => window.dispatchEvent(new CustomEvent('octopusGrab', { detail: { target: e.currentTarget } }))}
                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#08fdd8'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
@@ -105,7 +106,8 @@ const Certifications = () => {
         <div className="marquee-container">
           <div className="marquee-content">
             {[...internships, ...internships].map((internship, index) => (
-              <div key={index} style={{ minWidth: '350px', maxWidth: '350px', flex: '0 0 auto', background: '#111', border: '1px solid #333', display: 'flex', flexDirection: 'column', transition: 'all 0.3s ease' }}
+              <div key={index} className="grabbable" style={{ minWidth: '350px', maxWidth: '350px', flex: '0 0 auto', background: '#111', border: '1px solid #333', display: 'flex', flexDirection: 'column', transition: 'all 0.3s ease', cursor: 'pointer' }}
+                   onClick={(e) => window.dispatchEvent(new CustomEvent('octopusGrab', { detail: { target: e.currentTarget } }))}
                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#08fdd8'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
